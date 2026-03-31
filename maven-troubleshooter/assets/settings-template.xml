@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Maven Settings 模板
+  
+  使用说明：
+  1. 复制此文件到 ~/.m2/settings.xml
+  2. 根据实际需求修改配置
+  3. 敏感信息请使用 Maven 加密功能
+-->
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+    
+    <!-- ==================== 本地仓库配置 ==================== -->
+    <!-- 
+      默认位置：~/.m2/repository
+      如需修改，取消注释并指定路径
+    -->
+    <!--
+    <localRepository>/path/to/local/repo</localRepository>
+    -->
+    
+    <!-- ==================== 交互模式 ==================== -->
+    <interactiveMode>true</interactiveMode>
+    
+    <!-- ==================== 离线模式 ==================== -->
+    <!-- 默认 false，如需离线构建设为 true -->
+    <offline>false</offline>
+    
+    <!-- ==================== 镜像配置 ==================== -->
+    <!-- 
+      镜像优先级：settings.xml > pom.xml
+      mirrorOf 规则：
+      - *: 所有仓库
+      - external:*: 所有外部仓库（排除 localhost 和 file://）
+      - central: 仅中央仓库
+      - repo1,repo2: 指定仓库
+      - *,!repo1: 所有仓库但排除 repo1
+    -->
+    <mirrors>
+        <!-- 阿里云镜像（推荐国内使用） -->
+        <mirror>
+            <id>aliyun-public</id>
+            <name>Aliyun Public Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        
+        <!-- 阿里云 Google 代理 -->
+        <mirror>
+            <id>aliyun-google</id>
+            <name>Aliyun Google Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/google</url>
+            <mirrorOf>google</mirrorOf>
+        </mirror>
+        
+        <!-- 阿里云 Spring 代理 -->
+        <mirror>
+            <id>aliyun-spring</id>
+            <name>Aliyun Spring Maven Mirror</name>
+            <url>https://maven.aliyun.com/repository/spring</url>
+            <mirrorOf>spring</mirrorOf>
+        </mirror>
+        
+        <!-- 华为云镜像（备选） -->
+        <!--
+        <mirror>
+            <id>huawei</id>
+            <name>Huawei Cloud Maven Mirror</name>
+            <url>https://repo.huaweicloud.com/repository/maven/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        -->
+        
+        <!-- 腾讯云镜像（备选） -->
+        <!--
+        <mirror>
+            <id>tencent</id>
+            <name>Tencent Cloud Maven Mirror</name>
+            <url>https://mirrors.cloud.tencent.com/nexus/repository/maven-public/</url>
+            <mirrorOf>central</mirrorOf>
+        </mirror>
+        -->
+    </mirrors>
+    
+    <!-- ==================== 服务器认证配置 ==================== -->
+    <!-- 
+      注意：密码等敏感信息建议加密存储
+      加密方法：mvn --encrypt-password <password>
+    -->
+    <servers>
+        <!-- 示例：私服认证 -->
+        <!--
+        <server>
+            <id>private-repo</id>
+            <username>your-username</username>
+            <password>{加密后的密码}</password>
+        </server>
+        -->
+        
+        <!-- 示例：GitHub Packages -->
+        <!--
+        <server>
+            <id>github</id>
+            <username>your-github-username</username>
+            <password>your-personal-access-token</password>
+        </server>
+        -->
+        
+        <!-- 示例：Sonatype OSSRH（发布到 Maven 中央仓库） -->
+        <!--
+        <server>
+            <id>ossrh</id>
+            <username>your-sonatype-username</username>
+            <password>{加密后的密码}</password>
+        </server>
+        -->
+        
+        <!-- 示例：GPG 签名 -->
+        <!--
+        <server>
+            <id>gpg.passphrase</id>
+            <passphrase>{加密后的密码}</passphrase>
+        </server>
+        -->
+    </servers>
+    
+    <!-- ==================== 代理配置 ==================== -->
+    <!-- 企业网络环境可能需要配置 -->
+    <!--
+    <proxies>
+        <proxy>
+            <id>company-proxy</id>
+            <active>true</active>
+            <protocol>https</protocol>
+            <host>proxy.example.com</host>
+            <port>8080</port>
+            <nonProxyHosts>localhost|127.0.0.1|*.internal.com</nonProxyHosts>
+            <username>proxyuser</username>
+            <password>proxypass</password>
+        </proxy>
+    </proxies>
+    -->
+    
+    <!-- ==================== Profile 配置 ==================== -->
+    <profiles>
+        <!-- JDK 配置 -->
+        <profile>
+            <id>jdk-11</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <jdk>11</jdk>
+            </activation>
+            <properties>
+                <maven.compiler.source>11</maven.compiler.source>
+                <maven.compiler.target>11</maven.compiler.target>
+                <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            </properties>
+        </profile>
+        
+        <!-- 开发环境 -->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+        
+        <!-- 测试环境 -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>test</env>
+            </properties>
+        </profile>
+        
+        <!-- 生产环境 -->
+        <profile>
+            <id>prod</id>
+            <properties>
+                <env>prod</env>
+            </properties>
+        </profile>
+        
+        <!-- Spring Boot 默认配置 -->
+        <profile>
+            <id>spring-boot</id>
+            <repositories>
+                <repository>
+                    <id>spring-milestone</id>
+                    <name>Spring Milestone Repository</name>
+                    <url>https://repo.spring.io/milestone</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+        </profile>
+        
+        <!-- 自定义仓库配置 -->
+        <!--
+        <profile>
+            <id>custom-repos</id>
+            <repositories>
+                <repository>
+                    <id>private-repo</id>
+                    <name>Private Repository</name>
+                    <url>https://repo.example.com/maven2</url>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                    </snapshots>
+                </repository>
+            </repositories>
+            
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>private-plugin-repo</id>
+                    <name>Private Plugin Repository</name>
+                    <url>https://repo.example.com/maven2</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+        -->
+    </profiles>
+    
+    <!-- ==================== 激活的 Profile ==================== -->
+    <activeProfiles>
+        <activeProfile>jdk-11</activeProfile>
+        <activeProfile>dev</activeProfile>
+        <!-- <activeProfile>custom-repos</activeProfile> -->
+    </activeProfiles>
+    
+    <!-- ==================== 插件组配置 ==================== -->
+    <!-- 简化插件命令，如 mvn myplugin:goal -->
+    <!--
+    <pluginGroups>
+        <pluginGroup>com.example.plugins</pluginGroup>
+    </pluginGroups>
+    -->
+</settings>
