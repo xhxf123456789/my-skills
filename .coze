@@ -1,6 +1,6 @@
 [skill]
-  skill_package = "git-workflow.skill"
-  name = "git-workflow"
-  description = "Git操作流程管理与智能提交信息生成；提供分支管理、代码变更分析、冲突检测、提交信息生成；当用户需要生成提交信息、管理分支、分析变更或检测冲突时使用"
+  skill_package = "code-analyzer.skill"
+  name = "code-analyzer"
+  description = "Python代码质量分析与安全检测（优化版）；提供静态分析、复杂度计算、重复代码检测、安全漏洞扫描、综合质量报告；当用户需要分析代码质量、检查安全问题、计算复杂度、检测重复代码或生成质量报告时使用"
   project_name = "技能实现指南"
-  project_description = "Git操作流程与提交信息生成"
+  project_description = "Python代码质量分析与报告生成"
