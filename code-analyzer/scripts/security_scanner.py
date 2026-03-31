@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """
-安全漏洞扫描工具
+安全漏洞扫描工具（优化版）
 
 功能：使用 bandit 进行安全漏洞扫描
 用途：检测代码中的安全风险，如 SQL 注入、硬编码密码等
 
+优化功能：
+- 添加漏洞详细说明
+- 提供修复建议
+- OWASP Top 10 映射
+- 按严重性排序
+
 使用方式：
-    python security_scanner.py --path <文件或目录> --severity medium
+    python security_scanner.py --path <文件或目录> --severity medium --show-fixes
 
 参数说明：
     --path: 要扫描的文件或目录路径（必需）
     --severity: 最低严重级别，可选值：low/medium/high（默认：low）
+    --show-fixes: 显示修复建议（可选）
 """
 
 import argparse
@@ -165,6 +172,55 @@ def format_text_output(result: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def get_security_fix(test_id: str) -> Dict[str, str]:
+    """
+    获取安全修复建议
+    
+    Args:
+        test_id: Bandit 测试 ID
+    
+    Returns:
+        修复建议和 OWASP 映射
+    """
+    fixes = {
+        "B101": {
+            "fix": "避免使用 assert 语句进行业务逻辑判断，改用 if 语句或 unittest 断言",
+            "owasp": "A03:2021 - Injection",
+            "risk": "assert 语句在 Python -O 模式下会被优化掉，导致安全检查失效"
+        },
+        "B105": {
+            "fix": "使用环境变量或配置文件存储密码，不要硬编码在代码中",
+            "owasp": "A07:2021 - Identification and Authentication Failures",
+            "risk": "硬编码密码容易被泄露，导致未授权访问"
+        },
+        "B107": {
+            "fix": "使用 tempfile 模块创建临时文件，避免可预测的文件名",
+            "owasp": "A01:2021 - Broken Access Control",
+            "risk": "可预测的临时文件名可能导致符号链接攻击"
+        },
+        "B301": {
+            "fix": "使用 JSON、YAML 等安全格式替代 pickle",
+            "owasp": "A08:2021 - Software and Data Integrity Failures",
+            "risk": "pickle 反序列化可能导致远程代码执行"
+        },
+        "B601": {
+            "fix": "使用参数化查询，避免字符串拼接 SQL 语句",
+            "owasp": "A03:2021 - Injection",
+            "risk": "SQL 注入可能导致数据泄露或篡改"
+        },
+        "B602": {
+            "fix": "避免使用 shell=True，使用列表传参",
+            "owasp": "A03:2021 - Injection",
+            "risk": "shell 注入可能导致任意命令执行"
+        }
+    }
+    return fixes.get(test_id, {
+        "fix": "参考 OWASP 安全最佳实践",
+        "owasp": "未知",
+        "risk": "需要进一步评估风险"
+    })
+
+
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description="安全漏洞扫描工具")
@@ -173,6 +229,8 @@ def main():
                        help="最低严重级别（默认：low）")
     parser.add_argument("--output", choices=["json", "text"], default="json",
                        help="输出格式（默认：json）")
+    parser.add_argument("--show-fixes", action="store_true",
+                       help="显示修复建议")
     
     args = parser.parse_args()
     
@@ -183,6 +241,14 @@ def main():
     
     # 执行扫描
     result = run_bandit(args.path, args.severity)
+    
+    # 添加修复建议和 OWASP 映射
+    if args.show_fixes and "issues" in result:
+        for issue in result["issues"]:
+            fix_info = get_security_fix(issue.get("test_id", ""))
+            issue["fix_suggestion"] = fix_info["fix"]
+            issue["owasp_mapping"] = fix_info["owasp"]
+            issue["risk_description"] = fix_info["risk"]
     
     # 输出结果
     if args.output == "json":

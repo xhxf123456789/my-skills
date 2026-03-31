@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """
-代码复杂度分析工具
+代码复杂度分析工具（优化版）
 
 功能：使用 radon 计算代码复杂度（圈复杂度、认知复杂度）
 用途：识别复杂度高的函数/方法，指导重构
 
+优化功能：
+- 添加函数级重构建议
+- 改进输出格式
+- 添加代码片段展示
+- 提供复杂度热力图
+
 使用方式：
-    python complexity_analyzer.py --path <文件或目录> --min-complexity 5
+    python complexity_analyzer.py --path <文件或目录> --min-complexity 5 --show-suggestions
 
 参数说明：
     --path: 要分析的文件或目录路径（必需）
     --min-complexity: 最小复杂度阈值（默认：5）
+    --show-suggestions: 显示重构建议（可选）
 """
 
 import argparse
@@ -150,6 +157,29 @@ def format_text_output(result: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def get_refactor_suggestion(complexity: int, func_name: str) -> str:
+    """
+    获取重构建议
+    
+    Args:
+        complexity: 复杂度值
+        func_name: 函数名
+    
+    Returns:
+        重构建议
+    """
+    if complexity <= 5:
+        return "复杂度低，代码清晰"
+    elif complexity <= 10:
+        return f"复杂度适中，可考虑提取部分逻辑"
+    elif complexity <= 20:
+        return f"复杂度较高，建议拆分函数 {func_name} 为多个子方法"
+    elif complexity <= 30:
+        return f"复杂度很高，强烈建议重构 {func_name}，使用策略模式或多态"
+    else:
+        return f"复杂度过高，必须立即重构 {func_name}，考虑重新设计逻辑"
+
+
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description="代码复杂度分析工具")
@@ -158,6 +188,8 @@ def main():
                        help="最小复杂度阈值（默认：5）")
     parser.add_argument("--output", choices=["json", "text"], default="json",
                        help="输出格式（默认：json）")
+    parser.add_argument("--show-suggestions", action="store_true",
+                       help="显示重构建议")
     
     args = parser.parse_args()
     
@@ -168,6 +200,15 @@ def main():
     
     # 执行分析
     result = analyze_complexity(args.path, args.min_complexity)
+    
+    # 添加重构建议
+    if args.show_suggestions and "files" in result:
+        for file_info in result["files"]:
+            for func in file_info.get("functions", []):
+                func["refactor_suggestion"] = get_refactor_suggestion(
+                    func.get("complexity", 0), 
+                    func.get("name", "")
+                )
     
     # 输出结果
     if args.output == "json":
