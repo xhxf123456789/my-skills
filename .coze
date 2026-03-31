@@ -1,6 +1,6 @@
 [skill]
-name=""
-description=""
-skill_package=""
-project_name=""
-project_description=""
+  skill_package = "skill-demo.skill"
+  name = "skill-demo"
+  description = "展示Skill的核心实现机制与标准结构；当用户需要了解Skill如何实现、Skill结构规范或创建Skill示例时使用"
+  project_name = "技能实现指南"
+  project_description = "展示Skill实现机制与结构"
