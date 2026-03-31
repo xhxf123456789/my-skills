@@ -1,6 +1,6 @@
 [skill]
-  skill_package = "code-analyzer.skill"
-  name = "code-analyzer"
-  description = "Python代码质量分析与安全检测；提供静态分析、复杂度计算、重复代码检测、安全漏洞扫描；当用户需要分析代码质量、检查安全问题、计算复杂度或检测重复代码时使用"
+  skill_package = "test-generator.skill"
+  name = "test-generator"
+  description = "Python单元测试生成与覆盖率分析；智能生成测试用例、执行测试、收集覆盖率数据、生成测试报告；当用户需要为代码生成测试、分析测试覆盖率或识别未测试代码时使用"
   project_name = "技能实现指南"
-  project_description = "Python代码质量分析与安全检测"
+  project_description = "Python单元测试生成与覆盖率分析"
