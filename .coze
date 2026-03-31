@@ -1,6 +1,6 @@
 [skill]
-  skill_package = "skill-demo.skill"
-  name = "skill-demo"
-  description = "展示Skill的核心实现机制与标准结构；当用户需要了解Skill如何实现、Skill结构规范或创建Skill示例时使用"
+  skill_package = "code-analyzer.skill"
+  name = "code-analyzer"
+  description = "Python代码质量分析与安全检测；提供静态分析、复杂度计算、重复代码检测、安全漏洞扫描；当用户需要分析代码质量、检查安全问题、计算复杂度或检测重复代码时使用"
   project_name = "技能实现指南"
-  project_description = "展示Skill实现机制与结构"
+  project_description = "Python代码质量分析与安全检测"
