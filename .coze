@@ -1,6 +1,6 @@
 [skill]
-  skill_package = "test-generator.skill"
-  name = "test-generator"
-  description = "Python单元测试生成与覆盖率分析；智能生成测试用例、执行测试、收集覆盖率数据、生成测试报告；当用户需要为代码生成测试、分析测试覆盖率或识别未测试代码时使用"
+  skill_package = "git-workflow.skill"
+  name = "git-workflow"
+  description = "Git操作流程管理与智能提交信息生成；提供分支管理、代码变更分析、冲突检测、提交信息生成；当用户需要生成提交信息、管理分支、分析变更或检测冲突时使用"
   project_name = "技能实现指南"
-  project_description = "Python单元测试生成与覆盖率分析"
+  project_description = "Git操作流程与提交信息生成"
